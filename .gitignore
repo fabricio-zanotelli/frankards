@@ -1,0 +1,16 @@
+# Build output
+build/
+dist/
+
+# NetBeans project private files
+nbproject/private/
+
+# Mac OS
+.DS_Store
+
+# Zip/archives
+*.zip
+*.jar
+
+# GitHub Copilot / agent config
+.github/
