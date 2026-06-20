@@ -6,6 +6,13 @@ package frankards;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Data model for the FranKards application.
+ * Stores flashcard term-definition pairs using a HashMap for fast lookup
+ * and parallel ArrayLists to preserve insertion order for sequential review.
+ *
+ * @author ZanFa595
+ */
 public class Frankards {
     HashMap<String, String> flashcards = new HashMap();
     private int listSize = flashcards.size();

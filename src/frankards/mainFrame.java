@@ -5,6 +5,10 @@
 package frankards;
 
 /**
+ * Main GUI window for the FranKards flashcard application.
+ * Handles flashcard entry, sequential review via an animated flip panel,
+ * correct/wrong tracking with color-coded list feedback, and a progress bar
+ * that updates as the user advances through the deck.
  *
  * @author ZanFa595
  */
