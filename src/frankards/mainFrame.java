@@ -7,21 +7,12 @@ package frankards;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.EventQueue;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,6 +25,8 @@ import java.util.logging.Logger;
  * @author ZanFa595
  */
 public class mainFrame extends JFrame {
+    private static final Color CORRECT_COLOR = new Color(0, 150, 0);
+
     private Frankards frankards = new Frankards();
     private int panelWidth;
     private int panelHeight;
@@ -42,8 +35,6 @@ public class mainFrame extends JFrame {
     private int correctCount = 0;
     private int wrongCount = 0;
     private Color[] itemColors = new Color[0];
-    private JLabel wrongCountLabel = new JLabel("Wrong: 0");
-    private JLabel correctCountLabel = new JLabel("Correct: 0");
 
     /**
      * Creates new form mainFrame
@@ -53,72 +44,22 @@ public class mainFrame extends JFrame {
         panelWidth = flashcardPanel.getWidth();
         panelHeight = flashcardPanel.getHeight();
 
-        wrongCountLabel.setForeground(Color.RED);
-        correctCountLabel.setForeground(new Color(0, 150, 0));
-        JPanel glass = new JPanel(null) {
+        DefaultListCellRenderer colorRenderer = createColorRenderer();
+        termsList.setCellRenderer(colorRenderer);
+        definitionsList.setCellRenderer(colorRenderer);
+    }
+
+    private DefaultListCellRenderer createColorRenderer() {
+        return new DefaultListCellRenderer() {
             @Override
-            public boolean contains(int x, int y) {
-                for (Component c : getComponents()) {
-                    if (c.getBounds().contains(x, y)) return true;
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (index < itemColors.length && itemColors[index] != null) {
+                    c.setForeground(itemColors[index]);
                 }
-                return false;
+                return c;
             }
         };
-        glass.setOpaque(false);
-        glass.add(wrongCountLabel);
-        glass.add(correctCountLabel);
-        setGlassPane(glass);
-        glass.setVisible(true);
-
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowOpened(WindowEvent e) {
-                Point p1 = SwingUtilities.convertPoint(
-                    jScrollPane1, 0, jScrollPane1.getHeight() + 4, getRootPane());
-                wrongCountLabel.setBounds(p1.x, p1.y, 80, 18);
-                Point p2 = SwingUtilities.convertPoint(
-                    jScrollPane2, 0, jScrollPane2.getHeight() + 4, getRootPane());
-                correctCountLabel.setBounds(p2.x, p2.y, 80, 18);
-            }
-        });
-
-        termsList.setCellRenderer(new DefaultListCellRenderer() {
-            @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                java.awt.Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if (index < itemColors.length && itemColors[index] != null) {
-                    c.setForeground(itemColors[index]);
-                }
-                return c;
-            }
-        });
-        definitionsList.setCellRenderer(new DefaultListCellRenderer() {
-            @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                java.awt.Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if (index < itemColors.length && itemColors[index] != null) {
-                    c.setForeground(itemColors[index]);
-                }
-                return c;
-            }
-        });
-
-        turnerSlider.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent evt) {
-                turnerSliderStateChanged();
-            }
-        });
-
-        wrongButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                markAndAdvance(Color.RED, false);
-            }
-        });
-        correctButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                markAndAdvance(new Color(0, 150, 0), true);
-            }
-        });
     }
 
     /**
@@ -147,6 +88,8 @@ public class mainFrame extends JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         definitionsList = new javax.swing.JList<>();
         startButton = new javax.swing.JButton();
+        wrongCountLabel = new javax.swing.JLabel();
+        correctCountLabel = new javax.swing.JLabel();
 
         jLabel3.setText("jLabel3");
 
@@ -193,12 +136,27 @@ public class mainFrame extends JFrame {
         );
 
         turnerSlider.setValue(0);
+        turnerSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                turnerSliderStateChanged(evt);
+            }
+        });
 
         correctButton.setBackground(new java.awt.Color(0, 204, 51));
         correctButton.setText("correct");
+        correctButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                correctButtonActionPerformed(evt);
+            }
+        });
 
         wrongButton.setBackground(new java.awt.Color(255, 102, 102));
         wrongButton.setText("Wrong");
+        wrongButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                wrongButtonActionPerformed(evt);
+            }
+        });
 
         jScrollPane1.setViewportView(termsList);
 
@@ -210,6 +168,12 @@ public class mainFrame extends JFrame {
                 startButtonActionPerformed(evt);
             }
         });
+
+        wrongCountLabel.setText("Wrong: 0");
+        wrongCountLabel.setForeground(new java.awt.Color(255, 0, 0));
+
+        correctCountLabel.setText("Correct: 0");
+        correctCountLabel.setForeground(new java.awt.Color(0, 150, 0));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -223,14 +187,18 @@ public class mainFrame extends JFrame {
                                 .addGap(25, 25, 25)
                                 .addComponent(flashcardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(wrongCountLabel)))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGap(91, 91, 91)
                                 .addComponent(wrongButton)
                                 .addGap(103, 103, 103)
                                 .addComponent(correctButton)))
                         .addGap(28, 28, 28)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(correctCountLabel)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addComponent(listProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -269,9 +237,14 @@ public class mainFrame extends JFrame {
                 .addComponent(listProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jScrollPane2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(wrongCountLabel)
+                            .addComponent(correctCountLabel)))
                     .addComponent(flashcardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
                 .addComponent(turnerSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -310,7 +283,7 @@ public class mainFrame extends JFrame {
             currentIndex = 0;
             correctCount = 0;
             wrongCount = 0;
-            itemColors = new java.awt.Color[frankards.getTerms().size()];
+            itemColors = new Color[frankards.getTerms().size()];
             for (int i = 0; i < itemColors.length; i++) {
                 itemColors[i] = null;
             }
@@ -325,6 +298,37 @@ public class mainFrame extends JFrame {
             flashcardLabel.setText(frankards.getTerms().get(0));
         }
     }//GEN-LAST:event_startButtonActionPerformed
+
+    private void wrongButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wrongButtonActionPerformed
+        markAndAdvance(Color.RED, false);
+    }//GEN-LAST:event_wrongButtonActionPerformed
+
+    private void correctButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_correctButtonActionPerformed
+        markAndAdvance(CORRECT_COLOR, true);
+    }//GEN-LAST:event_correctButtonActionPerformed
+
+    private void turnerSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_turnerSliderStateChanged
+        int value = turnerSlider.getValue();
+
+        if (value >= 50 && !showingDefinition) {
+            showingDefinition = true;
+            if (!frankards.getDefinitions().isEmpty() && currentIndex < frankards.getDefinitions().size()) {
+                flashcardLabel.setText(frankards.getDefinitions().get(currentIndex));
+            }
+        } else if (value < 50 && showingDefinition) {
+            showingDefinition = false;
+            if (!frankards.getTerms().isEmpty() && currentIndex < frankards.getTerms().size()) {
+                flashcardLabel.setText(frankards.getTerms().get(currentIndex));
+            }
+        }
+
+        double scale = Math.abs(value - 50) / 50.0;
+        int newWidth = Math.max(1, (int) (panelWidth * scale));
+        int newHeight = Math.max(1, (int) (panelHeight * scale));
+        flashcardPanel.setPreferredSize(new Dimension(newWidth, newHeight));
+        getContentPane().revalidate();
+        repaint();
+    }//GEN-LAST:event_turnerSliderStateChanged
 
     private void markAndAdvance(Color color, boolean isCorrect) {
         if (frankards.getTerms().isEmpty() || currentIndex >= frankards.getTerms().size()) return;
@@ -352,33 +356,6 @@ public class mainFrame extends JFrame {
             flashcardLabel.setText("Done!");
         }
     }
-
-    private void turnerSliderStateChanged() {
-        int value = turnerSlider.getValue();
-
-        if (value >= 50 && !showingDefinition) {
-            showingDefinition = true;
-            if (!frankards.getDefinitions().isEmpty() && currentIndex < frankards.getDefinitions().size()) {
-                flashcardLabel.setText(frankards.getDefinitions().get(currentIndex));
-            }
-        } else if (value < 50 && showingDefinition) {
-            showingDefinition = false;
-            if (!frankards.getTerms().isEmpty() && currentIndex < frankards.getTerms().size()) {
-                flashcardLabel.setText(frankards.getTerms().get(currentIndex));
-            }
-        }
-
-        double scale = Math.abs(value - 50) / 50.0;
-        int newWidth = Math.max(1, (int) (panelWidth * scale));
-        int newHeight = Math.max(1, (int) (panelHeight * scale));
-        flashcardPanel.setPreferredSize(new Dimension(newWidth, newHeight));
-        getContentPane().revalidate();
-        repaint();
-    }
-
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -404,7 +381,7 @@ public class mainFrame extends JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new mainFrame().setVisible(true);
             }
@@ -412,6 +389,7 @@ public class mainFrame extends JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel correctCountLabel;
     private javax.swing.JButton correctButton;
     private javax.swing.JTextField definitionTextField;
     private javax.swing.JList<String> definitionsList;
@@ -428,6 +406,7 @@ public class mainFrame extends JFrame {
     private javax.swing.JTextField termTextField;
     private javax.swing.JList<String> termsList;
     private javax.swing.JSlider turnerSlider;
+    private javax.swing.JLabel wrongCountLabel;
     private javax.swing.JButton wrongButton;
     // End of variables declaration//GEN-END:variables
 }
