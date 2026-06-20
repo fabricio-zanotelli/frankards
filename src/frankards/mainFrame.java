@@ -271,7 +271,9 @@ public class mainFrame extends javax.swing.JFrame {
         definitionsList.setListData(frankards.getDefinitions().toArray(new String[0]));
 
         java.awt.Color[] newColors = new java.awt.Color[frankards.getTerms().size()];
-        System.arraycopy(itemColors, 0, newColors, 0, Math.min(itemColors.length, newColors.length));
+        for (int i = 0; i < Math.min(itemColors.length, newColors.length); i++) {
+            newColors[i] = itemColors[i];
+        }
         itemColors = newColors;
 
         listProgress.setMaximum(frankards.getTerms().size());
@@ -284,6 +286,9 @@ public class mainFrame extends javax.swing.JFrame {
             correctCount = 0;
             wrongCount = 0;
             itemColors = new java.awt.Color[frankards.getTerms().size()];
+            for (int i = 0; i < itemColors.length; i++) {
+                itemColors[i] = null;
+            }
             wrongCountLabel.setText("Wrong: 0");
             correctCountLabel.setText("Correct: 0");
             showingDefinition = false;
