@@ -207,8 +207,8 @@ public class mainFrame extends javax.swing.JFrame {
                         .addGap(28, 28, 28)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(114, 114, 114)
-                        .addComponent(listProgress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(25, 25, 25)
+                        .addComponent(listProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(140, 140, 140)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,6 +273,9 @@ public class mainFrame extends javax.swing.JFrame {
         java.awt.Color[] newColors = new java.awt.Color[frankards.getTerms().size()];
         System.arraycopy(itemColors, 0, newColors, 0, Math.min(itemColors.length, newColors.length));
         itemColors = newColors;
+
+        listProgress.setMaximum(frankards.getTerms().size());
+        listProgress.setValue(currentIndex);
     }//GEN-LAST:event_enterTermButtonActionPerformed
 
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
@@ -285,6 +288,8 @@ public class mainFrame extends javax.swing.JFrame {
             correctCountLabel.setText("Correct: 0");
             showingDefinition = false;
             turnerSlider.setValue(0);
+            listProgress.setMaximum(frankards.getTerms().size());
+            listProgress.setValue(0);
             termsList.repaint();
             definitionsList.repaint();
             flashcardLabel.setText(frankards.getTerms().get(0));
@@ -309,6 +314,7 @@ public class mainFrame extends javax.swing.JFrame {
         currentIndex++;
         showingDefinition = false;
         turnerSlider.setValue(0);
+        listProgress.setValue(currentIndex);
 
         if (currentIndex < frankards.getTerms().size()) {
             flashcardLabel.setText(frankards.getTerms().get(currentIndex));
