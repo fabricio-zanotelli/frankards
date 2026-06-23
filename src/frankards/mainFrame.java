@@ -284,10 +284,27 @@ public class mainFrame extends JFrame {
         termsList.setListData(frankards.getTerms().toArray(new String[0]));
         definitionsList.setListData(frankards.getDefinitions().toArray(new String[0]));
 
+        /*
+        code aidé par internet
+        vu que chaque cellule de la Jlist est un nouvel élément créé
+        et que chaque cellule possède une couleur
+        il faut un array de couleurs correspondant à l'array de termes et de définitions, liés à la Jlist
+        pour chaque flashcard il y aura une couleur correspondante dans l'array de couleurs
+
+        premier reflexe - utilisation d'un array list.
+        Mais, ici, comme on créé un nouvel array pour chaque flashcard
+        on créé à chaque fois un nouvel array avec la valeur de la quantité de flashcards actualisée, alors que les autres sont copiées  
+        */
+
         Color[] newColors = new Color[frankards.getTermsCount()];
         for (int i = 0; i < Math.min(itemColors.length, newColors.length); i++) {
             newColors[i] = itemColors[i];
         }
+        /*
+        newColors est une variable locale
+        elle est attributée à l'array de couleurs itemColors qui est un attribut (variable d'instance)
+        a chaque fois que newColors est créée, elle remplace la précendente valeur de itemColors
+        */
         itemColors = newColors;
 
         //progress bar
@@ -302,10 +319,12 @@ public class mainFrame extends JFrame {
             wrongCount = 0;
             itemColors = new Color[frankards.getTermsCount()];
             for (int i = 0; i < itemColors.length; i++) {
-                itemColors[i] = null;
+                itemColors[i] = Color.BLACK; // Reset all colors to black
             }
-            wrong.setText("Wrong: 0");
-            correct.setText("Correct: 0");
+            wrong.setText("Wrong:");
+            wrongCountLabel.setText("0");
+            correctCountLabel.setText("0");
+            correct.setText("Correct:");
             showingDefinition = false;
             turnerSlider.setValue(0);
             listProgress.setMaximum(frankards.getTerms().size());
@@ -316,15 +335,15 @@ public class mainFrame extends JFrame {
         }
     }//GEN-LAST:event_startButtonActionPerformed
 
-    private void wrongButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wrongButtonActionPerformed
+    private void wrongButtonActionPerformed(java.awt.event.ActionEvent evt) {
         markAndAdvance(Color.RED, false);
-    }//GEN-LAST:event_wrongButtonActionPerformed
+    }
 
-    private void correctButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_correctButtonActionPerformed
+    private void correctButtonActionPerformed(java.awt.event.ActionEvent evt) {
         markAndAdvance(Color.GREEN, true);
     }//GEN-LAST:event_correctButtonActionPerformed
 
-    private void turnerSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_turnerSliderStateChanged
+    private void turnerSliderStateChanged(javax.swing.event.ChangeEvent evt) {
         int value = turnerSlider.getValue();
 
         if (value >= 50 && !showingDefinition) {
