@@ -31,9 +31,6 @@ public class mainFrame extends JFrame {
     private int panelWidth;
     private int panelHeight;
     private boolean showingDefinition = false;
-    private int currentIndex = 0;
-    private int correctCount = 0;
-    private int wrongCount = 0;
     private Color[] itemColors = new Color[0];
 
     /**
@@ -300,24 +297,21 @@ public class mainFrame extends JFrame {
         for (int i = 0; i < Math.min(itemColors.length, newColors.length); i++) {
             newColors[i] = itemColors[i];
         }
-        /*
-        newColors est une variable locale
-        elle est attributée à l'array de couleurs itemColors qui est un attribut (variable d'instance)
-        a chaque fois que newColors est créée, elle remplace la précendente valeur de itemColors
-        */
         itemColors = newColors;
 
         //progress bar
         listProgress.setMaximum(frankards.getTermsCount());
-        listProgress.setValue(currentIndex);
+        listProgress.setValue(frankards.getCurrentIndex());
     }
 
-    private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
+    private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        
+        
         if (!frankards.getTerms().isEmpty()) {
-            currentIndex = 0;
-            correctCount = 0;
-            wrongCount = 0;
+            frankards.resetProgress();
             itemColors = new Color[frankards.getTermsCount()];
+           
+
             for (int i = 0; i < itemColors.length; i++) {
                 itemColors[i] = Color.BLACK; // Reset all colors to black
             }
@@ -333,7 +327,11 @@ public class mainFrame extends JFrame {
             definitionsList.repaint();
             flashcardLabel.setText(frankards.getTerms().get(0));
         }
-    }//GEN-LAST:event_startButtonActionPerformed
+        else{
+            flashcardLabel.setText("enter a flashcard");
+        }
+
+    }
 
     private void wrongButtonActionPerformed(java.awt.event.ActionEvent evt) {
         markAndAdvance(Color.RED, false);
@@ -348,13 +346,13 @@ public class mainFrame extends JFrame {
 
         if (value >= 50 && !showingDefinition) {
             showingDefinition = true;
-            if (!frankards.getDefinitions().isEmpty() && currentIndex < frankards.getDefinitions().size()) {
-                flashcardLabel.setText(frankards.getDefinitions().get(currentIndex));
+            if (!frankards.getDefinitions().isEmpty() && frankards.getCurrentIndex() < frankards.getDefinitions().size()) {
+                flashcardLabel.setText(frankards.getDefinitions().get(frankards.getCurrentIndex()));
             }
         } else if (value < 50 && showingDefinition) {
             showingDefinition = false;
-            if (!frankards.getTerms().isEmpty() && currentIndex < frankards.getTerms().size()) {
-                flashcardLabel.setText(frankards.getTerms().get(currentIndex));
+            if (!frankards.getTerms().isEmpty() && frankards.getCurrentIndex() < frankards.getTerms().size()) {
+                flashcardLabel.setText(frankards.getTerms().get(frankards.getCurrentIndex()));
             }
         }
 
@@ -368,29 +366,29 @@ public class mainFrame extends JFrame {
     }                                         
 
     private void markAndAdvance(Color color, boolean isCorrect) {
-        //early return - sert a arreter l'execution d'une methode au cas ou une condition est vraie - fonctionne que pour methodes void
-        if (frankards.getTerms().isEmpty() || currentIndex >= frankards.getTermsCount()) 
+        //early return - arrête l'exécution si la condition est vraie
+        if (frankards.getTerms().isEmpty() || frankards.getCurrentIndex() >= frankards.getTermsCount()) 
             return;
 
-        itemColors[currentIndex] = color;
+        itemColors[frankards.getCurrentIndex()] = color;
         termsList.repaint();
         definitionsList.repaint();
 
         if (isCorrect) {
-            correctCount++;
-            correctCountLabel.setText(String.valueOf(correctCount));
+            frankards.incrementCorrect();
+            correctCountLabel.setText(String.valueOf(frankards.getCorrectCount()));
         } else {
-            wrongCount++;
-            wrongCountLabel.setText(String.valueOf(wrongCount));
+            frankards.incrementWrong();
+            wrongCountLabel.setText(String.valueOf(frankards.getWrongCount()));
         }
 
-        currentIndex++;
+        frankards.setCurrentIndex(frankards.getCurrentIndex() + 1);
         showingDefinition = false;
         turnerSlider.setValue(0);
-        listProgress.setValue(currentIndex);
+        listProgress.setValue(frankards.getCurrentIndex());
 
-        if (currentIndex < frankards.getTermsCount()) {
-            flashcardLabel.setText(frankards.getTerms().get(currentIndex));
+        if (frankards.getCurrentIndex() < frankards.getTermsCount()) {
+            flashcardLabel.setText(frankards.getTerms().get(frankards.getCurrentIndex()));
         } else {
             flashcardLabel.setText("Done!");
         }

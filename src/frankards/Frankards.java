@@ -16,6 +16,9 @@ import java.util.HashMap;
 public class Frankards {
     private ArrayList<String> terms = new ArrayList<>();
     private ArrayList<String> definitions = new ArrayList<>();
+    private int correctCount = 0;
+    private int wrongCount = 0;
+    private int currentIndex = 0;
     
     public void enterList(String pTerm, String pDefinition){
         terms.add(pTerm);
@@ -37,5 +40,36 @@ public class Frankards {
     */
     public int getTermsCount() {
         return this.terms.size();
+    }
+    
+    // Métodos para rastrear progresso de revisão
+    public int getCorrectCount() {
+        return correctCount;
+    }
+    
+    public int getWrongCount() {
+        return wrongCount;
+    }
+    
+    public int getCurrentIndex() {
+        return currentIndex;
+    }
+    
+    public void setCurrentIndex(int index) {
+        currentIndex = index;
+    }
+    
+    public void incrementCorrect() {
+        correctCount++;
+    }
+    
+    public void incrementWrong() {
+        wrongCount++;
+    }
+    
+    public void resetProgress() {
+        correctCount = 0;
+        wrongCount = 0;
+        currentIndex = 0;
     }
 }
