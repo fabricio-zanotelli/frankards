@@ -14,13 +14,10 @@ import java.util.HashMap;
  * @author ZanFa595
  */
 public class Frankards {
-    HashMap<String, String> flashcards = new HashMap();
-    private int listSize = flashcards.size();
-    ArrayList<String> terms = new ArrayList<>();
-    ArrayList<String> definitions = new ArrayList<>();
+    private ArrayList<String> terms = new ArrayList<>();
+    private ArrayList<String> definitions = new ArrayList<>();
     
     public void enterList(String pTerm, String pDefinition){
-        flashcards.put(pTerm, pDefinition);
         terms.add(pTerm);
         definitions.add(pDefinition);
     }
@@ -28,7 +25,17 @@ public class Frankards {
     public ArrayList<String> getTerms(){
         return terms;
     }
+    
+    
     public ArrayList<String> getDefinitions(){
         return definitions;
+    }
+    
+    /*
+    comme la valeur size est dynamique dans le programme, 
+    on ne peut pas creer d'attribut, qui etait mon premier reflexe, on doit l'acceder par une methode
+    */
+    public int getTermsCount() {
+        return this.terms.size();
     }
 }

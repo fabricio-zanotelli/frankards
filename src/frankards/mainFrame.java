@@ -49,6 +49,7 @@ public class mainFrame extends JFrame {
         definitionsList.setCellRenderer(colorRenderer);
     }
 
+    //pris d'internet pour changer la couleur d'une seule cellule de la JList
     private DefaultListCellRenderer createColorRenderer() {
         return new DefaultListCellRenderer() {
             @Override
@@ -88,6 +89,8 @@ public class mainFrame extends JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         definitionsList = new javax.swing.JList<>();
         startButton = new javax.swing.JButton();
+        wrong = new javax.swing.JLabel();
+        correct = new javax.swing.JLabel();
         wrongCountLabel = new javax.swing.JLabel();
         correctCountLabel = new javax.swing.JLabel();
 
@@ -169,11 +172,15 @@ public class mainFrame extends JFrame {
             }
         });
 
-        wrongCountLabel.setText("Wrong: 0");
-        wrongCountLabel.setForeground(new java.awt.Color(255, 0, 0));
+        wrong.setForeground(new java.awt.Color(255, 0, 0));
+        wrong.setText("Wrong:");
 
-        correctCountLabel.setText("Correct: 0");
-        correctCountLabel.setForeground(new java.awt.Color(0, 150, 0));
+        correct.setForeground(new java.awt.Color(0, 150, 0));
+        correct.setText("Correct: ");
+
+        wrongCountLabel.setText("jLabel4");
+
+        correctCountLabel.setText("jLabel4");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -189,7 +196,10 @@ public class mainFrame extends JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(wrongCountLabel)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(wrong)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(wrongCountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGap(91, 91, 91)
                                 .addComponent(wrongButton)
@@ -198,27 +208,29 @@ public class mainFrame extends JFrame {
                         .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(correctCountLabel)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(listProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(140, 140, 140)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(termTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(definitionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(39, 39, 39)
-                                .addComponent(enterTermButton))
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(correct)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(correctCountLabel))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(100, 100, 100)
                         .addComponent(turnerSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(158, 158, 158)
-                        .addComponent(startButton)))
+                        .addComponent(startButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(termTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(definitionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(enterTermButton))
+                                .addComponent(listProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2)))))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -226,9 +238,9 @@ public class mainFrame extends JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
                 .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(termTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(definitionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -243,8 +255,12 @@ public class mainFrame extends JFrame {
                             .addComponent(jScrollPane2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(wrongCountLabel)
-                            .addComponent(correctCountLabel)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(wrong)
+                                .addComponent(wrongCountLabel))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(correct)
+                                .addComponent(correctCountLabel))))
                     .addComponent(flashcardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
                 .addComponent(turnerSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -260,7 +276,7 @@ public class mainFrame extends JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void enterTermButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterTermButtonActionPerformed
+    private void enterTermButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                
         String term = termTextField.getText();
         String definition = definitionTextField.getText();
         
@@ -268,27 +284,28 @@ public class mainFrame extends JFrame {
         termsList.setListData(frankards.getTerms().toArray(new String[0]));
         definitionsList.setListData(frankards.getDefinitions().toArray(new String[0]));
 
-        Color[] newColors = new Color[frankards.getTerms().size()];
+        Color[] newColors = new Color[frankards.getTermsCount()];
         for (int i = 0; i < Math.min(itemColors.length, newColors.length); i++) {
             newColors[i] = itemColors[i];
         }
         itemColors = newColors;
 
-        listProgress.setMaximum(frankards.getTerms().size());
+        //progress bar
+        listProgress.setMaximum(frankards.getTermsCount());
         listProgress.setValue(currentIndex);
-    }//GEN-LAST:event_enterTermButtonActionPerformed
+    }
 
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         if (!frankards.getTerms().isEmpty()) {
             currentIndex = 0;
             correctCount = 0;
             wrongCount = 0;
-            itemColors = new Color[frankards.getTerms().size()];
+            itemColors = new Color[frankards.getTermsCount()];
             for (int i = 0; i < itemColors.length; i++) {
                 itemColors[i] = null;
             }
-            wrongCountLabel.setText("Wrong: 0");
-            correctCountLabel.setText("Correct: 0");
+            wrong.setText("Wrong: 0");
+            correct.setText("Correct: 0");
             showingDefinition = false;
             turnerSlider.setValue(0);
             listProgress.setMaximum(frankards.getTerms().size());
@@ -304,7 +321,7 @@ public class mainFrame extends JFrame {
     }//GEN-LAST:event_wrongButtonActionPerformed
 
     private void correctButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_correctButtonActionPerformed
-        markAndAdvance(CORRECT_COLOR, true);
+        markAndAdvance(Color.GREEN, true);
     }//GEN-LAST:event_correctButtonActionPerformed
 
     private void turnerSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_turnerSliderStateChanged
@@ -322,6 +339,7 @@ public class mainFrame extends JFrame {
             }
         }
 
+        //code pris en partie d'internet pour faire une animation de flip du flashcard
         double scale = Math.abs(value - 50) / 50.0;
         int newWidth = Math.max(1, (int) (panelWidth * scale));
         int newHeight = Math.max(1, (int) (panelHeight * scale));
@@ -331,7 +349,9 @@ public class mainFrame extends JFrame {
     }//GEN-LAST:event_turnerSliderStateChanged
 
     private void markAndAdvance(Color color, boolean isCorrect) {
-        if (frankards.getTerms().isEmpty() || currentIndex >= frankards.getTerms().size()) return;
+        //early return - sert a arreter l'execution d'une methode au cas ou une condition est vraie - fonctionne que pour methodes void
+        if (frankards.getTerms().isEmpty() || currentIndex >= frankards.getTermsCount()) 
+            return;
 
         itemColors[currentIndex] = color;
         termsList.repaint();
@@ -339,10 +359,10 @@ public class mainFrame extends JFrame {
 
         if (isCorrect) {
             correctCount++;
-            correctCountLabel.setText("Correct: " + correctCount);
+            correctCountLabel.setText(String.valueOf(correctCount));
         } else {
             wrongCount++;
-            wrongCountLabel.setText("Wrong: " + wrongCount);
+            wrongCountLabel.setText(String.valueOf(wrongCount));
         }
 
         currentIndex++;
@@ -350,7 +370,7 @@ public class mainFrame extends JFrame {
         turnerSlider.setValue(0);
         listProgress.setValue(currentIndex);
 
-        if (currentIndex < frankards.getTerms().size()) {
+        if (currentIndex < frankards.getTermsCount()) {
             flashcardLabel.setText(frankards.getTerms().get(currentIndex));
         } else {
             flashcardLabel.setText("Done!");
@@ -389,8 +409,9 @@ public class mainFrame extends JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel correctCountLabel;
+    private javax.swing.JLabel correct;
     private javax.swing.JButton correctButton;
+    private javax.swing.JLabel correctCountLabel;
     private javax.swing.JTextField definitionTextField;
     private javax.swing.JList<String> definitionsList;
     private javax.swing.JButton enterTermButton;
@@ -406,7 +427,8 @@ public class mainFrame extends JFrame {
     private javax.swing.JTextField termTextField;
     private javax.swing.JList<String> termsList;
     private javax.swing.JSlider turnerSlider;
-    private javax.swing.JLabel wrongCountLabel;
+    private javax.swing.JLabel wrong;
     private javax.swing.JButton wrongButton;
+    private javax.swing.JLabel wrongCountLabel;
     // End of variables declaration//GEN-END:variables
 }
