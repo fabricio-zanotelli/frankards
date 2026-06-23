@@ -178,9 +178,9 @@ public class mainFrame extends JFrame {
         correct.setForeground(new java.awt.Color(0, 150, 0));
         correct.setText("Correct: ");
 
-        wrongCountLabel.setText("jLabel4");
+        wrongCountLabel.setText("0");
 
-        correctCountLabel.setText("jLabel4");
+        correctCountLabel.setText("0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -341,7 +341,7 @@ public class mainFrame extends JFrame {
 
     private void correctButtonActionPerformed(java.awt.event.ActionEvent evt) {
         markAndAdvance(Color.GREEN, true);
-    }//GEN-LAST:event_correctButtonActionPerformed
+    }                                             
 
     private void turnerSliderStateChanged(javax.swing.event.ChangeEvent evt) {
         int value = turnerSlider.getValue();
@@ -365,7 +365,7 @@ public class mainFrame extends JFrame {
         flashcardPanel.setPreferredSize(new Dimension(newWidth, newHeight));
         getContentPane().revalidate();
         repaint();
-    }//GEN-LAST:event_turnerSliderStateChanged
+    }                                         
 
     private void markAndAdvance(Color color, boolean isCorrect) {
         //early return - sert a arreter l'execution d'une methode au cas ou une condition est vraie - fonctionne que pour methodes void
